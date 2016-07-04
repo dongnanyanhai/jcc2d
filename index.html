@@ -1,20 +1,246 @@
 <!DOCTYPE html>
-
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
-    <title>Documentation Index</title>
-
-    <style type="text/css">
-        
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
     </style>
-
+    <script type="x-shader/x-vertex" id="vs">
+        attribute vec3 position; 
+        uniform mat4 modelViewMatrix; 
+        uniform mat4 projectionMatrix; 
+        uniform mat4 viewMatrix; 
+        void main(void){ 
+            gl_Position = projectionMatrix * viewMatrix * modelViewMatrix * vec4(position, 1.0); 
+        }
+    </script>
+    <script type="x-shader/x-fragment" id="fs">
+        precision mediump float; 
+        uniform vec4 uColor; 
+        void main(void){ 
+            gl_FragColor = uColor; 
+        }
+    </script>
 </head>
 
 <body>
-<a href="docs">documention</a>
-<a href="examples">examples</a>
+    <canvas id="canvas" width="640" height="550"></canvas>
+    <script src="./js/jcw3d.js" type="text/javascript"></script>
+    <script type="text/javascript">
+    function rndRad() {
+        return Math.PI * 2 * Math.random();
+    }
 
+    JC.Triangle = function(rad) {
+        JC.Object3D.call(this);
+
+        this.velocity = new JC.Vector3(0, 0, 0.8 * Math.random());
+        this.acceleration = new JC.Vector3(0, 0, -0.002 * Math.random());
+        // this.alpha = 1;
+        this.translate = new JC.Vector3(0, 0, 20 - 40 * Math.random());
+        this._coords = [];
+        this.coords = [];
+        for (var i = 0; i < 3; i++) {
+            var t = rndRad(),
+                b = rndRad(),
+                tx = Math.sin(t) * Math.cos(b) * rad,
+                ty = Math.cos(t) * rad,
+                tz = Math.sin(t) * Math.sin(b) * rad,
+                vec = new JC.Vector3(tx, ty, tz),
+                vec1 = new JC.Vector3(tx, ty, tz);
+            this._coords.push(vec);
+            this.coords.push(vec1);
+        }
+        this.hh = -80;
+    };
+    // alert(JC);
+    JC.Triangle.prototype = Object.create(JC.Object3D.prototype);
+    JC.Triangle.prototype.transform = function(vec) {
+        var vector = new JC.Vector3();
+
+        var m = {};
+        var ch = Math.cos(this.rotation.z);
+        var sh = Math.sin(this.rotation.z);
+        var ca = Math.cos(this.rotation.y);
+        var sa = Math.sin(this.rotation.y);
+        var cb = Math.cos(this.rotation.x);
+        var sb = Math.sin(this.rotation.x);
+
+        m.m00 = ch * ca;
+        m.m01 = sh * sb - ch * sa * cb;
+        m.m02 = ch * sa * sb + sh * cb;
+        m.m10 = sa;
+        m.m11 = ca * cb;
+        m.m12 = -ca * sb;
+        m.m20 = -sh * ca;
+        m.m21 = sh * sa * cb + ch * sb;
+        m.m22 = -sh * sa * sb + ch * cb;
+
+        vector.x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + this.translate.x;
+        vector.y = m.m10 * vec.x + m.m11 * vec.y + m.m12 * vec.z + this.translate.y;
+        vector.z = m.m20 * vec.x + m.m21 * vec.y + m.m22 * vec.z + this.translate.z;
+
+        return vector;
+    };
+    JC.Triangle.prototype.update = function() {
+        this.velocity.add(this.acceleration);
+        this.translate.add(this.velocity);
+        if (this.translate.x < -w / 2 || this.translate.x > w / 2 || this.translate.y < this.hh) {
+            this.velocity = new JC.Vector3(0, 0, 0.8 * Math.random());
+            this.translate = new JC.Vector3(0, 0, 20 - 40 * Math.random());
+        }
+        this.rotation.x += 3 * Math.PI / 180;
+        this.rotation.z += 3 * Math.PI / 180;
+        for (var i = 0; i < this._coords.length; i++) {
+            var pp = this.transform(this._coords[i]);
+            // console.log(this.coords[i]);
+            this.coords[i].set(pp.x, pp.y, pp.z);
+            // this.coords[i].set(this.transform(this._coords[i]));
+        }
+        // console.log(this.coords);
+    };
+
+
+    JC.TriangleGloup = function(geometry, material) {
+        JC.Object3D.call(this);
+
+        this.num = 20;
+        this.swapn();
+        this.flow = 100;
+        this.time = Date.now();
+
+        this.geometry = geometry || {};
+        this.material = material;
+    };
+    JC.TriangleGloup.prototype = Object.create(JC.Object3D.prototype);
+
+    JC.TriangleGloup.prototype.swapn = function() {
+        this.children.push(new JC.Triangle(Math.random() * 2 + 2));
+    };
+    JC.TriangleGloup.prototype.getGeo = function(cld) {
+
+        for (var i = 0; i < cld.coords.length; i++) {
+            // cld.coords[i].setCoords(this.transform(this._coords[i]));
+            var p = cld.coords[i];
+            this.geometry.attributes.position.array.push(p.x, p.y, p.z);
+        }
+        // console.log(cld.coords[0]);
+    };
+    JC.TriangleGloup.prototype.update = function() {
+        var t = Date.now();
+        if (this.children.length < this.num && t - this.time > this.flow) {
+            this.swapn();
+            this.time = t;
+        }
+        this.geometry.attributes.position.array = [];
+        for (var i = 0; i < this.children.length; i++) {
+            this.children[i].update();
+            this.getGeo(this.children[i]);
+        }
+    };
+    JC.TriangleGloup.prototype.render = function(gl, session) {
+        this.update();
+        this.renderMe(gl, session);
+    };
+    JC.TriangleGloup.prototype.renderMe = function(gl, session) {
+        session.shaderManager.register(this.material);
+        session.shaderManager.upload(this.material.id);
+        this.createVBO(gl);
+        this.setAttributes(gl, session.shaderManager.PRG);
+
+        gl.uniformMatrix4fv(session.shaderManager.PRG.uniforms.modelViewMatrix, false, this.matrixWorld.elements);
+        gl.uniformMatrix4fv(session.shaderManager.PRG.uniforms.viewMatrix, false, session.camera.matrixWorldInverse.elements);
+        gl.uniformMatrix4fv(session.shaderManager.PRG.uniforms.projectionMatrix, false, session.camera.projectionMatrix.elements);
+        gl.uniform4fv(session.shaderManager.PRG.uniforms.uColor, [195 / 255, 196 / 255, 115 / 255, 1]);
+
+        gl.drawArrays(gl.TRIANGLES, 0, this.geometry.attributes.position.array.length / 3);
+    };
+    JC.TriangleGloup.prototype.createVBO = function(gl) {
+        this.geometry.attrVBO = {};
+        for (var attr in this.geometry.attributes) {
+            this.geometry.attrVBO[attr] = gl.createBuffer();
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.geometry.attrVBO[attr]);
+
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(this.geometry.attributes[attr].array), gl.STATIC_DRAW);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        }
+    };
+    JC.TriangleGloup.prototype.setAttributes = function(gl, prg) {
+        for (var attr in this.geometry.attrVBO) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.geometry.attrVBO[attr]);
+
+            gl.enableVertexAttribArray(prg.attributes[attr]);
+
+            gl.vertexAttribPointer(prg.attributes[attr], this.geometry.attributes[attr].len, gl.FLOAT, false, 0, 0);
+        }
+    };
+
+
+    var canvas = document.getElementById('canvas');
+    // var ctx = canvas.getContext('2d');
+    var w = canvas.width;
+    var h = canvas.height;
+    var isAnimating = false;
+    var camera = new JC.PerspectiveCamera(60, w / h, 0.1, 1000);
+    // console.log(camera.rotation);
+    camera.position.set(0, 0, 100);
+    camera.lookAt(new JC.Vector3(0, 0, 10));
+    var triangle = new JC.TriangleGloup({
+        attributes: {
+            position: {
+                array: [],
+                len: 3
+            }
+        }
+    }, {
+        id: 'aaaa',
+        vertexSrc: document.getElementById('vs').textContent,
+        fragmentSrc: document.getElementById('fs').textContent,
+        attributes: {
+            position: 'position',
+            colors: 'colors'
+        },
+        uniforms: {
+            modelViewMatrix: 'modelViewMatrix',
+            projectionMatrix: 'projectionMatrix',
+            viewMatrix: 'viewMatrix',
+            uColor: 'uColor'
+        }
+    });
+    triangle.position.y = 48;
+
+    var scene = new JC.Scene();
+    scene.add(triangle);
+    var renderer = new JC.Renderer(canvas, {});
+
+
+
+    var starImg = new Image();
+    starImg.src = "./images/star.png";
+    starImg.onload = function() {
+        start();
+    };
+
+
+    function animate() {
+        renderer.render(scene, camera);
+        if (isAnimating) {
+            requestAnimationFrame(animate);
+        }
+    }
+
+    function stop() {
+        isAnimating = false;
+    }
+
+    function start() {
+        isAnimating = true;
+        animate();
+    }
+    </script>
 </body>
+
 </html>
