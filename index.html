@@ -9,7 +9,7 @@
 
 <body>
     <canvas id="canvas" width="640" height="550"></canvas>
-    <div class="navgator">
+    <div class="navgator" style="display: none;">
         <div class="documention"><a href="docs">documention</a></div>
         <div class="examples"><a href="examples">examples</a></div>
     </div>
@@ -78,19 +78,52 @@
     };
 
     var circle = new CircleGloup({
-        radius: w/6 >>0
+        radius: w/6 >> 0
     });
-    circleParent = new JC.Graphics();
+    var circleParent = new JC.Graphics();
     circleParent.drawCall(function(ctx){
         circle.render(ctx);
     });
-    DOC.addChilds(circleParent);
+    var line1 = new JC.Graphics();
+    line1.drawCall(function(ctx){
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.moveTo(-60,280);
+        ctx.lineTo(266,-274);
+        ctx.lineTo(60,-274);
+        ctx.lineTo(-266,280);
+        ctx.fill();
+    });
+    line1.x = 540;
+    line1.y = -1679;
+    line1.moveTween({
+        attr: {x: -340,y: -200},
+        time: 400
+    });
+
+    var line2 = new JC.Graphics();
+    line2.drawCall(function(ctx){
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(255,255,255,0.9)";
+        ctx.moveTo(-60,280);
+        ctx.lineTo(266,-274);
+        ctx.lineTo(60,-274);
+        ctx.lineTo(-266,280);
+        ctx.fill();
+    });
+    line2.x = -540;
+    line2.y = 1679;
+    line2.moveTween({
+        attr: {x: 340,y: 200},
+        time: 400
+    });
+
+    DOC.addChilds(circleParent,line1,line2);
     stage.addChilds(DOC);
 
     function render() {
         RAF(render);
         stage.render();
-
     }
     render();
 
