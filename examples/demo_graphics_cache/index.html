@@ -50,6 +50,7 @@ var stats = new Stats();
             ctx.strokeStyle = COLOURS[i%COLOURS.length];
             ctx.beginPath();
             ctx.arc( 0, 0, i, 0, Math.PI*2 );
+            ctx.closePath();
             ctx.stroke();
         }
     },{
@@ -60,6 +61,7 @@ var stats = new Stats();
     cacheMap.y = -200;
     cacheMap.moveTween({
         attr: {x: 100,y: 200},
+        time: 1000,
         infinity: true,
         alternate: true
     });
@@ -69,14 +71,13 @@ var stats = new Stats();
             ctx.strokeStyle = COLOURS[i%COLOURS.length];
             ctx.beginPath();
             ctx.strokeRect( 50-i-50, 50-i-50, i*2, i*2 );
-            // ctx.arc( 0, 0, i, 0, Math.PI*2 );
+            ctx.closePath();
             ctx.stroke();
         }
     },{
-        cache: false,
+        cache: true,
         session: {center: {x: 50,y: 50},width:100,height:100}
     });
-    cacheMap2.y = -h>>1;
 
     DOC.addChilds(cacheMap,cacheMap2);
     stage.addChilds(DOC);
