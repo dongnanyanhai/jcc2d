@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>JC_demo</title>
+    <style type="text/css">
+    * {
+        padding: 0;
+        margin: 0;
+    }
+    
+    body {
+        overflow: hidden;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id="demo_canvas" width="320" height="410"></canvas>
+    <script type="text/javascript" src="../libs/jcc2d.js"></script>
+    <script type="text/javascript" src="../libs/stats.min.js"></script>
+    <script type="text/javascript">
+    window.onerror = function(msg, url, line) {
+        alert('line::::' + line + 'url::::' + url + 'msg::::' + msg);
+    };
+    window.onresize = function() {
+        resize();
+    };
+    var w = window.innerWidth,
+        h = window.innerHeight,
+        pic,
+        boundBox,
+        stage = new JC.Stage('demo_canvas'),
+        DOC = new JC.Container();
+    DOC.x = w / 2;
+    DOC.y = h / 2;
+    DOC.name = 'doc';
+
+
+
+    var stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+
+    JC.TWEEN.extend({
+        bounceOut: function(t, b, c, d) {
+            if ((t /= d) < (1 / 2.75)) {
+                return c * (7.5625 * t * t) + b;
+            } else if (t < (2 / 2.75)) {
+                return c * (7.5625 * (t -= (1.5 / 2.75)) * t + 0.75) + b;
+            } else if (t < (2.5 / 2.75)) {
+                return c * (7.5625 * (t -= (2.25 / 2.75)) * t + 0.9375) + b;
+            }
+            return c * (7.5625 * (t -= (2.625 / 2.75)) * t + 0.984375) + b;
+        }
+    });
+
+
+    var images = new JC.ImagesLoad({
+        woman: './images/woman.png'
+    });
+
+    images.imagesLoaded = function() {
+        resize();
+        pic = new JC.Sprite({
+            image: images.getResult('woman')
+        });
+        pic.scaleX = pic.scaleY = 1;
+        pic.moveTween({
+            attr: {
+                scaleX: 0.25,
+                scaleY: 0.25
+            },
+            time: 1000,
+            fx: 'bounceOut'
+        });
+        pic.isTwo = false;
+        pic.startPos = function(ev) {
+            this.startPosX = ev.touches[0].global.x;
+            this.startPosY = ev.touches[0].global.y;
+            if(this.oldPosX===undefined||this.oldPosX===undefined){
+                this.oldPosX = this.x;
+                this.oldPosY = this.y;
+            }
+        };
+        pic.movePos = function(ev) {
+            var intervalX = ev.touches[0].global.x - this.startPosX;
+            var intervalY = ev.touches[0].global.y - this.startPosY;
+            this.x = this.oldPosX + intervalX;
+            this.y = this.oldPosY + intervalY;
+        };
+        pic.endPos = function() {
+            this.oldPosX = this.x;
+            this.oldPosY = this.y;
+        };
+        pic.startScale = function(ev) {
+            var x = ev.touches[0].global.x - ev.touches[1].global.x;
+            var y = ev.touches[0].global.y - ev.touches[1].global.y;
+            this.disMark = Math.sqrt(x * x + y * y);
+            if(this.oldScale===undefined)this.oldScale = this.scaleX;
+        };
+        pic.moveScale = function(ev) {
+            var x = ev.touches[0].global.x - ev.touches[1].global.x;
+            var y = ev.touches[0].global.y - ev.touches[1].global.y;
+            var scale = Math.sqrt(x * x + y * y) / this.disMark;
+            this.scaleX = this.scaleY = this.oldScale * scale;
+        };
+        pic.endScale = function() {
+            this.oldScale = this.scaleX;
+        };
+        pic.startRotate = function(ev) {
+            var p1 = {},
+                p2 = {};
+            p1.x = ev.touches[0].global.x;
+            p1.y = ev.touches[0].global.y;
+            p2.x = ev.touches[1].global.x;
+            p2.y = ev.touches[1].global.y;
+            this.SV = {
+                x: p1.x - p2.x,
+                y: p1.y - p2.y
+            };
+            if(this.preDeg===undefined)this.preDeg = this.rotation;
+        };
+        pic.moveRotate = function(ev) {
+            var p1 = {},
+                p2 = {};
+            p1.x = ev.touches[0].global.x;
+            p1.y = ev.touches[0].global.y;
+            p2.x = ev.touches[1].global.x;
+            p2.y = ev.touches[1].global.y;
+            var INV = {
+                x: p1.x - p2.x,
+                y: p1.y - p2.y
+            };
+            var nor = this.SV.x * INV.y - INV.x * this.SV.y;
+            var pi = nor > 0 ? 1 : -1;
+            var tmp = (INV.x * this.SV.x + INV.y * this.SV.y) / (Math.sqrt(INV.x * INV.x + INV.y * INV.y) * Math.sqrt(this.SV.x * this.SV.x + this.SV.y * this.SV.y));
+
+            var iNowDeg = pi * Math.acos(tmp) * 180/Math.PI;
+
+            this.rotation = this.preDeg + iNowDeg;
+        };
+        pic.endRotate = function() {
+            this.preDeg = this.rotation;
+        };
+        pic.on('touchstart', function(ev) {
+            ev.originalEvent.preventDefault();
+            if (ev.touches.length > 1) {
+                pic.isTwo = true;
+                pic.startScale(ev);
+                pic.startRotate(ev);
+            } else {
+                pic.isTwo = false;
+                pic.startPos(ev);
+            }
+        });
+        pic.on('touchmove', function(ev) {
+            if (ev.touches.length > 1 && pic.disMark !== 0) {
+                pic.isTwo = true;
+                pic.moveScale(ev);
+                if (pic.disMark > 60) pic.moveRotate(ev);
+            } else {
+                if (pic.isTwo) pic.startPos(ev);
+                pic.isTwo = false;
+                pic.movePos(ev);
+            }
+        });
+        pic.on('touchend', function(ev) {
+            if (pic.isTwo) {
+                pic.endScale();
+                pic.endRotate();
+            } else {
+                pic.endPos();
+            }
+        });
+
+        DOC.addChilds(pic);
+        stage.addChilds(DOC);
+
+        render();
+    };
+
+    function render() {
+        RAF(render);
+
+        stage.render();
+
+        stats.update();
+    }
+
+    function resize() {
+        w = window.innerWidth;
+        h = window.innerHeight;
+        stage.resize(w, h);
+    }
+    </script>
+</body>
+
+</html>
