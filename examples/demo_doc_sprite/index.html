@@ -55,16 +55,17 @@ JC.TWEEN.extend({
 });
 
 
-var images = new JC.ImagesLoad({
+
+var loadBox = JC.loaderUtil({
     pic: './images/card02.png',
     pic2: './images/card04.png',
     pic3: './images/card05.png'
 });
 
-images.imagesLoaded = function(){
+loadBox.on('compelete',function(){
     resize();
     pic = new JC.Sprite({
-        image: images.getResult('pic')
+        texture: loadBox.getById('pic')
     });
     pic.x = 500;
     pic.moveTween({
@@ -74,7 +75,7 @@ images.imagesLoaded = function(){
     });
 
     pic2 = new JC.Sprite({
-        image: images.getResult('pic2')
+        texture: loadBox.getById('pic2')
     });
     pic2.x = -500;
     pic2.moveTween({
@@ -84,22 +85,23 @@ images.imagesLoaded = function(){
     });
 
 
-    pic3 = new JC.Sprite({
-        image: images.getResult('pic3')
-    });
-    pic3.moveTween({
-        attr: {rotation: 360},
-        infinity: true,
-        alternate: true,
-        time: 1000
-    });
-
-    DOC.addChilds(pic2,pic,pic3);
+    DOC.addChilds(pic2,pic);
     stage.addChilds(DOC);
 
 
     render();
-};
+});
+
+pic3 = new JC.Sprite({
+    texture: loadBox.getById('pic3')
+});
+pic3.moveTween({
+    attr: {rotation: 360},
+    infinity: true,
+    alternate: true,
+    time: 1000
+});
+DOC.addChilds(pic3);
 
 function render(){
     RAF(render);

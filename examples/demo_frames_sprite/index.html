@@ -41,26 +41,28 @@ var stats = new Stats();
     document.body.appendChild(stats.domElement);
 
 
-var images = new JC.ImagesLoad({
+var loadBox = JC.loaderUtil({
     frames: './images/frames.png'
 });
 
-images.imagesLoaded = function(){
+loadBox.on('compelete',function(){
     resize();
     runMan = new JC.Sprite({
-        image: images.getResult('frames'),
+        texture: loadBox.getById('frames'),
         width: 165,
         height: 292,
         count: 26
     });
-    runMan.interval = 1000/60; // 帧率 60FPS
     runMan.goFrames({ // you can config repeatF (repeat some times) or loop (play infinite times)
         // repeatF: 1,
+        fps: 30,
         loop: true
     });
     runMan.x = -165 >> 1;
+
+
     jumpMan = new JC.Sprite({
-        image: images.getResult('frames'),
+        texture: loadBox.getById('frames'),
         width: 165,
         height: 292,
         count: 38,
@@ -69,7 +71,8 @@ images.imagesLoaded = function(){
     });
     jumpMan.goFrames({
         // loop: true
-        repeatF: 1,
+        fps: 30,
+        repeatF: 5,
         fillMode: 'backwards'
     });
     jumpMan.x = 165 >> 1;
@@ -78,7 +81,7 @@ images.imagesLoaded = function(){
 
 
     render();
-};
+});
 
 function render(){
     RAF(render);

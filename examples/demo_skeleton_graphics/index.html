@@ -47,11 +47,11 @@ var stats = new Stats();
     stats.domElement.style.top = '0px';
     document.body.appendChild(stats.domElement);
 
-var images = new JC.ImagesLoad({
+var loadBox = JC.loaderUtil({
     body: './images/body.png'
 });
 
-images.imagesLoaded = function(){
+loadBox.on('compelete',function(){
 
     resize();
 
@@ -203,7 +203,7 @@ images.imagesLoaded = function(){
     wheel2.rotation = -30;
 
     body = new JC.Sprite({
-        image: images.getResult('body')
+        texture: loadBox.getById('body')
     });
 
     ground = new JC.Graphics();
@@ -265,7 +265,7 @@ images.imagesLoaded = function(){
 
     render();
 
-};
+});
 
 
 

@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: Animate</title>
+	<title>Documentation Class: Loader</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -63,13 +63,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Animate</h1>
+	<h1 class="page-title">Class: Loader</h1>
 <section>
 
 <header>
     
         <h2>
-        Animate
+        Loader
         </h2>
         
     
@@ -82,7 +82,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="Animate"><span class="type-signature"></span>new Animate()</h4>
+    <h4 class="name" id="Loader"><span class="type-signature"></span>new Loader()</h4>
     
     
 </dt>
@@ -90,7 +90,7 @@
 
     
     <div class="description">
-        <p>动画引擎</p>
+        <p>图片资源加载器</p>
     </div>
     
 
@@ -160,6 +160,17 @@
     </div>
 
     
+        <h3 class="subsection-title">Extends</h3>
+
+        
+
+
+    <ul>
+        <li><a href="JC.Eventer.html">JC.Eventer</a></li>
+    </ul>
+
+
+    
 
     
 
@@ -178,7 +189,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="moveTween"><span class="type-signature"></span>moveTween(opts)</h4>
+    <h4 class="name" id="getById"><span class="type-signature"></span>getById(id)</h4>
     
     
 </dt>
@@ -186,39 +197,8 @@
 
     
     <div class="description">
-        <p>开启动画</p>
-<pre class="prettyprint source lang-js"><code>
-// 扩展缓动函数，缓动函数库详见目录下的util/tween.js
-
-JC.TWEEN.extend({    
-   bounceOut: function(t, b, c, d){
-       if ((t/=d) &lt; (1/2.75)) {
-           return c*(7.5625*t*t) + b;
-       } else if (t &lt; (2/2.75)) {
-           return c*(7.5625*(t-=(1.5/2.75))*t + 0.75) + b;
-       } else if (t &lt; (2.5/2.75)) {
-           return c*(7.5625*(t-=(2.25/2.75))*t + 0.9375) + b;
-       }
-       return c*(7.5625*(t-=(2.625/2.75))*t + 0.984375) + b;
-   }
-});
-var dispayObj = new JC.Text('Hello JC','bold 36px Arial','#c32361');
-dispayObj.moveTween({
-  attr: {
-     x: 200, // x轴移动到200的位置
-     y: 100, // y轴移动到100的位置
-     rotation: 360, // 旋转360
-     scaleX: 2, // x轴缩放到2
-     scaleY: .5, // y轴缩放到0.5
-     alpha: 0, // 透明度变化到0
-  },
-  fx: 'bounceOut', // 执行动画使用的缓动函数 默认值为 easeBoth
-  repeats: 10, // 动画运动完后再重复10次
-  infinity: true, // 无限循环动画
-  alternate: true, // 偶数次的时候动画回放
-  time: 1000, // 动画时长 ms单位 默认 300ms
-  complete: function(){ console.log('end'); } // 动画执行结束回调
-});</code></pre>
+        <p>从纹理图片盒子里面通过id获取纹理图片</p>
+<pre class="prettyprint source lang-js"><code>var texture = loadBox.getById('id');</code></pre>
     </div>
     
 
@@ -253,13 +233,13 @@ dispayObj.moveTween({
 
         <tr>
             
-                <td class="name"><code>opts</code></td>
+                <td class="name"><code>id</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">object</span>
+<span class="param-type">string</span>
 
 
 
@@ -270,7 +250,7 @@ dispayObj.moveTween({
 
             
 
-            <td class="description last"><p>配置</p></td>
+            <td class="description last"></td>
         </tr>
 
     
@@ -330,6 +310,178 @@ dispayObj.moveTween({
     
 
     
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="JC.Texture.html">JC.Texture</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="load"><span class="type-signature"></span>load(srcMap)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        <p>开始加载资源</p>
+<pre class="prettyprint source lang-js"><code>var loadBox = new JC.Loader();
+loadBox.load({
+        id: 'img/xxx.png'
+});</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>srcMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type"><a href="JC.Loader.html">JC.Loader</a></span>
+
+
+
+    </dd>
+</dl>
+
+
+        
 
     
 </dd>

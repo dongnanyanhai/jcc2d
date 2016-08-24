@@ -60,14 +60,14 @@
     });
 
 
-    var images = new JC.ImagesLoad({
+    var loadBox = JC.loaderUtil({
         woman: './images/woman.png'
     });
 
-    images.imagesLoaded = function() {
+    loadBox.on('compelete',function() {
         resize();
         pic = new JC.Sprite({
-            image: images.getResult('woman')
+            texture: loadBox.getById('woman')
         });
         pic.scaleX = pic.scaleY = 1;
         pic.moveTween({
@@ -182,7 +182,7 @@
         stage.addChilds(DOC);
 
         render();
-    };
+    });
 
     function render() {
         RAF(render);

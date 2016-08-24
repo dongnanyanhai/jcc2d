@@ -86,14 +86,14 @@ JC.TWEEN.extend({
 });
 
 
-var images = new JC.ImagesLoad({
+var loadBox = JC.loaderUtil({
     daisy: './images/daisy.png'
 });
 
-images.imagesLoaded = function(){
+loadBox.on('compelete',function(){
     resize();
     pic = new JC.Sprite({
-        image: images.getResult('daisy')
+        texture: loadBox.getById('daisy')
     });
     pic.scaleX = pic.scaleY = 3;
     pic.moveTween({
@@ -181,7 +181,7 @@ images.imagesLoaded = function(){
 
 
     render();
-};
+});
 
 function render(){
     RAF(render);

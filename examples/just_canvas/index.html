@@ -89,7 +89,7 @@ function OBJ(img){
     this.x = 0;
     this.y = 0;
 
-    this.image = img;
+    this.image = img.texture;
 
     this.width = img.width;
     this.height = img.height;
@@ -134,13 +134,13 @@ var stats = new Stats();
 
 
 
-var images = new JC.ImagesLoad({
+var loadBox = JC.loaderUtil({
     pic: './images/card01.png'
 });
 
-images.imagesLoaded = function(){
+loadBox.on('compelete',function(){
     resize();
-    pic = new OBJ(images.getResult('pic'));
+    pic = new OBJ(loadBox.getById('pic'));
 
     pic.x = -100;
     pic.y = -100;
@@ -152,7 +152,7 @@ images.imagesLoaded = function(){
     });
 
     render();
-};
+});
 
 function render(){
     RAF(render);
