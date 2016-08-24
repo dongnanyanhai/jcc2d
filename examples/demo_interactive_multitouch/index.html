@@ -70,13 +70,13 @@
             texture: loadBox.getById('woman')
         });
         pic.scaleX = pic.scaleY = 1;
-        pic.moveTween({
-            attr: {
+        pic.to({
+            to: {
                 scaleX: 0.25,
                 scaleY: 0.25
             },
             time: 1000,
-            fx: 'bounceOut'
+            duration: 'bounceOut'
         });
         pic.isTwo = false;
         pic.startPos = function(ev) {

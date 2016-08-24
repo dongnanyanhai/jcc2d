@@ -96,9 +96,9 @@
     });
     line1.x = 540;
     line1.y = -1679;
-    line1.moveTween({
-        attr: {x: -296,y: -274},
-        time: 400
+    line1.to({
+        to: {x: -296,y: -274},
+        duration: 400
     });
 
     var line2 = new JC.Graphics();
@@ -113,9 +113,9 @@
     });
     line2.x = -540;
     line2.y = 1679;
-    line2.moveTween({
-        attr: {x: 296,y: 274},
-        time: 400
+    line2.to({
+        to: {x: 296,y: 274},
+        duration: 400
     });
 
     DOC.addChilds(circleParent,line1,line2);

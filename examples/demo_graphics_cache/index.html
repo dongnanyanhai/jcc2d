@@ -59,9 +59,9 @@ var stats = new Stats();
     });
     cacheMap.x = -100;
     cacheMap.y = -200;
-    cacheMap.moveTween({
-        attr: {x: 100,y: 200},
-        time: 1000,
+    cacheMap.to({
+        to: {x: 100,y: 200},
+        duration: 1000,
         infinity: true,
         alternate: true
     });

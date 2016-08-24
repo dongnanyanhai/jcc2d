@@ -115,21 +115,21 @@ loadBox.on('compelete',function(){
 
     stage.addChilds(DOC,ground);
 
-    arm1.moveTween({
-        attr: {rotation: -10},
-        time: 2000,
+    arm1.to({
+        to: {rotation: -10},
+        duration: 2000,
         infinity: true,
         alternate: true
     });
-    hand.moveTween({
-        attr: {rotation: 50},
-        time: 2000,
+    hand.to({
+        to: {rotation: 50},
+        duration: 2000,
         infinity: true,
         alternate: true
     });
-    arm2.moveTween({
-        attr: {rotation: 80},
-        time: 2000,
+    arm2.to({
+        to: {rotation: 80},
+        duration: 2000,
         infinity: true,
         alternate: true
     });

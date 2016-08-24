@@ -75,9 +75,9 @@ loadBox.on('compelete',function(){
         texture: loadBox.getById('pic')
     });
     pic.x = 500;
-    pic.moveTween({
-        attr: {x: 100},
-        time: 1000,
+    pic.to({
+        to: {x: 100},
+        duration: 1000,
         fx: 'bounceOut'
     });
     pic.name = 'fu*k';
@@ -103,9 +103,9 @@ loadBox.on('compelete',function(){
         texture: loadBox.getById('pic2')
     });
     pic2.x = -500;
-    pic2.moveTween({
-        attr: {x: -100},
-        time: 1000,
+    pic2.to({
+        to: {x: -100},
+        duration: 1000,
         fx: 'bounceOut'
     });
 
@@ -113,11 +113,11 @@ loadBox.on('compelete',function(){
     pic3 = new JC.Sprite({
         texture: loadBox.getById('pic3')
     });
-    pic3.moveTween({
-        attr: {rotation: 360},
+    pic3.to({
+        to: {rotation: 360},
         infinity: true,
         alternate: true,
-        time: 1000
+        duration: 1000
     });
     pic3.sp = {};
     pic3.pp = {x: pic3.x,y: pic3.y};

@@ -96,9 +96,9 @@ loadBox.on('compelete',function(){
         texture: loadBox.getById('daisy')
     });
     pic.scaleX = pic.scaleY = 3;
-    pic.moveTween({
-        attr: {scaleX: 1,scaleY: 1},
-        time: 1000,
+    pic.to({
+        to: {scaleX: 1,scaleY: 1},
+        duration: 1000,
         fx: 'bounceOut'
     });
     pic.sp = {};pic.pp = {x: pic.x,y: pic.y};
