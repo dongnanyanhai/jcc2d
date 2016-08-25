@@ -27,7 +27,7 @@ function noop(){}
 function Animate(){
     this.MST = 0;
     this.MAT = 300;
-    this.fx = 'easeBoth';
+    this.ease = 'easeBoth';
     this.complete = noop;
     this.moving = false;
     this.infinity = false;
@@ -38,7 +38,7 @@ Animate.prototype.moveTween = function(opts){
     this.MST = Date.now();
     this.MATR = opts.attr||this.MATR;
     this.MAT = opts.time||this.MAT;
-    this.fx = opts.fx||this.fx;
+    this.ease = opts.ease||this.ease;
     this.complete = opts.complete||this.complete;
     this.infinity = opts.infinity||this.infinity;
     this.alternate = opts.alternate||this.alternate;
@@ -74,7 +74,7 @@ Animate.prototype.manager = function(){
 Animate.prototype.nextPose = function(){
     var now=Date.now()-this.MST;
     for(var i in this.MATR){
-        this[i] = JC.TWEEN[this.fx]( now , this.MATRC[i] , this.MATR[i] - this.MATRC[i] , this.MAT );
+        this[i] = JC.TWEEN[this.ease]( now , this.MATRC[i] , this.MATR[i] - this.MATRC[i] , this.MAT );
     }
 };
 function OBJ(img){
