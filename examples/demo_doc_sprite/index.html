@@ -67,8 +67,8 @@ loadBox.on('compelete',function(){
     pic = new JC.Sprite({
         texture: loadBox.getById('pic')
     });
-    pic.x = 500;
-    pic.to({
+    pic.fromTo({
+        from: {x: 500},
         to: {x: 100},
         duration: 1000,
         fx: 'bounceOut'
@@ -77,8 +77,8 @@ loadBox.on('compelete',function(){
     pic2 = new JC.Sprite({
         texture: loadBox.getById('pic2')
     });
-    pic2.x = -500;
-    pic2.to({
+    pic2.fromTo({
+        from: {x: -500},
         to: {x: -100},
         duration: 1000,
         fx: 'bounceOut'

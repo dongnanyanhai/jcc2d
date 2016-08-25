@@ -53,8 +53,8 @@ loadBox.on('compelete',function(){
         height: 292,
         count: 26
     });
-    runMan.goFrames({ // you can config repeatF (repeat some times) or loop (play infinite times)
-        // repeatF: 1,
+    runMan.goFrames({ // you can config repeats (repeat some times) or loop (play infinite times)
+        // repeats: 1,
         fps: 30,
         loop: true
     });
@@ -72,8 +72,11 @@ loadBox.on('compelete',function(){
     jumpMan.goFrames({
         // loop: true
         fps: 30,
-        repeatF: 5,
-        fillMode: 'backwards'
+        repeats: 5,
+        fillMode: 'backwards',
+        onCompelete: function(){
+            console.log('frames animation was compelete');
+        }
     });
     jumpMan.x = 165 >> 1;
     DOC.addChilds(runMan,jumpMan);

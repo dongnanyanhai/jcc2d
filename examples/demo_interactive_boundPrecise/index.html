@@ -22,7 +22,7 @@
 <body>
 <canvas id="demo_canvas" width="320" height="410"></canvas>
 <div class="control_box">
-    <input type="checkbox" name="hitArea" id="hitArea" checked><span id="text_face">点击显示事件热区</span>
+    <input type="checkbox" name="hitArea" id="hitArea"><span id="text_face">点击显示事件热区</span>
 </div>
 <script type="text/javascript" src="../libs/jcc2d.js"></script>
 <script type="text/javascript" src="../libs/stats.min.js"></script>
@@ -173,6 +173,7 @@ loadBox.on('compelete',function(){
         ctx.stroke();
         
     });
+    boundBox.visible = false;
     pic.addChilds(boundBox);
 
 
