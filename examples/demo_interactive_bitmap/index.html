@@ -32,14 +32,17 @@ var w = window.innerWidth,
     DOC = new JC.Container();
     DOC.x = w/2;
     DOC.y = h/2;
-    DOC.name = 'doc';
     DOC.on('touchstart',function(ev){
         // ev.cancleBubble = true;
-        console.log('touchstart at my chest '+DOC.name+'!!!!!');
+        console.log('touchstart at DOC !!!!!');
     });
     DOC.on('touchmove',function(ev){
         // ev.cancleBubble = true;
-        console.log('touchmove at my chest '+DOC.name+'!!!!!');
+        console.log('touchmove at DOC !!!!!');
+    });
+    DOC.on('touchend',function(ev){
+        // ev.cancleBubble = true;
+        console.log('touchend at DOC !!!!!');
     });
 
 
@@ -80,24 +83,22 @@ loadBox.on('compelete',function(){
         duration: 1000,
         ease: 'bounceOut'
     });
-    pic.name = 'fu*k';
     pic.on('click',function(ev){
         // ev.cancleBubble = true;
-        console.log('click at my chest '+pic.name+'!!!!!');
+        console.log('click at my pic !!!!!');
     });
     pic.on('touchstart',function(ev){
-        // ev.cancleBubble = true;
-        console.log('touchstart at my chest '+pic.name+'!!!!!');
+        ev.cancleBubble = true;
+        console.log('touchstart at my pic !!!!!');
     });
-    // pic.on('touchmove',function(ev){
-    //     // ev.cancleBubble = true;
-    //     console.log('touchmove at my chest '+pic.name+'!!!!!');
-    // });
-    // pic.on('touchend',function(ev){
-    //     // ev.cancleBubble = true;
-    //     console.log('touchend at my chest '+pic.name+'!!!!!');
-    // });
-    // console.log(pic);
+    pic.on('touchmove',function(ev){
+        ev.cancleBubble = true;
+        console.log('touchmove at my pic !!!!!');
+    });
+    pic.on('touchend',function(ev){
+        ev.cancleBubble = true;
+        console.log('touchend at my pic !!!!!');
+    });
 
     pic2 = new JC.Sprite({
         texture: loadBox.getById('pic2')
@@ -123,13 +124,13 @@ loadBox.on('compelete',function(){
     pic3.pp = {x: pic3.x,y: pic3.y};
     pic3.on('touchstart',function(ev){
         // ev.cancleBubble = true;
-        // console.log('touchstart at my chest '+pic.name+'!!!!!');
+        // console.log('touchstart at pic3 !!!!!');
         pic3.sp.x = ev.global.x;
         pic3.sp.y = ev.global.y;
     });
     pic3.on('touchmove',function(ev){
         // ev.cancleBubble = true;
-        // console.log('touchstart at my chest '+pic.name+'!!!!!');
+        // console.log('touchstart at pic3 !!!!!');
         var np = {};
         np.x = ev.global.x-pic3.sp.x;
         np.y = ev.global.y-pic3.sp.y;
@@ -139,7 +140,7 @@ loadBox.on('compelete',function(){
     });
     pic3.on('touchend',function(ev){
         // ev.cancleBubble = true;
-        // console.log('touchstart at my chest '+pic.name+'!!!!!');
+        // console.log('touchstart at pic3 !!!!!');
 
         pic3.pp.x = pic3.x;
         pic3.pp.y = pic3.y;

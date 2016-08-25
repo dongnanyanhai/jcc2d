@@ -32,7 +32,7 @@
     };
     var w = window.innerWidth,
         h = window.innerHeight,
-        materialSprite1,
+        materialSprites=[],
         boundBox,
         stage = new JC.Stage('demo_canvas'),
         DOC = new JC.Container();
@@ -67,22 +67,27 @@
 
     loadBox.on('compelete',function() {
         resize();
-        materialSprite1 = new JC.MaterialSprite({
-            texture: loadBox.getById('woman')
-        });
-        materialSprite1.scale = 0.25;
-        materialSprite1.fromTo({
-            from: {
-                y: -400
-            },
-            to: {
-                y: h/2-materialSprite1.regY
-            },
-            duration: 1000,
-            ease: 'bounceOut'
-        });
+        for(var i=0;i<3;i++){
+            materialSprites[i] = new JC.MaterialSprite({
+                texture: loadBox.getById('woman')
+            });
+            materialSprites[i].name = 'pic'+i;
+            materialSprites[i].x = w*(Math.random()-0.5);
+            materialSprites[i].scale = 0.25;
+            materialSprites[i].rotation = 60*(Math.random()-0.5);
+            materialSprites[i].fromTo({
+                from: {
+                    y: -400
+                },
+                to: {
+                    y: h/2-materialSprites[i].regY*materialSprites[i].scale
+                },
+                duration: 1000,
+                ease: 'bounceOut'
+            });
+            DOC.addChilds(materialSprites[i]);
+        }
 
-        DOC.addChilds(materialSprite1);
         stage.addChilds(DOC);
 
         render();
