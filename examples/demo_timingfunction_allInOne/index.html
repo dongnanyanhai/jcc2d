@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+	<title>JC_demo</title>
+	<style type="text/css">
+    * {padding:0;margin:0;}
+    body {overflow: hidden;background-color: #000;}
+    </style>
+</head>
+<body>
+<canvas id="demo_canvas" width="640" height="960"></canvas>
+
+<script type="text/javascript" src="../libs/jcc2d.js"></script>
+<script type="text/javascript" src="../libs/util/tween.js"></script>
+<script type="text/javascript" src="../libs/stats.min.js"></script>
+<script type="text/javascript">
+window.onresize = function(){
+    resize();
+};
+
+function Cricle(color){
+    this.color = color||'#618d8a';
+}
+Cricle.prototype.render = function(ctx){
+    ctx.beginPath();
+    ctx.fillStyle = this.color;
+    ctx.arc(0,0,20,0,2*Math.PI);
+    ctx.fill();
+};
+
+
+JC.TWEEN.extend(tween);
+
+var w = window.innerWidth,
+    h = window.innerHeight,
+    shape = [],
+    c = [],
+    stage = new JC.Stage('demo_canvas'),
+    DOC = new JC.Container();
+    DOC.x = w/2;
+    DOC.y = h/2;
+
+var stats = new Stats();
+    stats.domElement.style.position = 'absolute';
+    stats.domElement.style.top = '0px';
+    document.body.appendChild(stats.domElement);
+
+    resize();
+
+    shape[0] = new JC.Graphics();
+    shape[0].y = -400;
+    shape[0].c = new Cricle('#618d8a');
+    shape[0].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[0].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'easeIn',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[0]);
+
+
+
+    shape[1] = new JC.Graphics();
+    shape[1].y = -300;
+    shape[1].c = new Cricle('#9eaf8c');
+    shape[1].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[1].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'easeOut',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[1]);
+
+
+    shape[2] = new JC.Graphics();
+    shape[2].y = -200;
+    shape[2].c = new Cricle('#ebca88');
+    shape[2].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[2].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'elasticIn',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[2]);
+
+
+    shape[3] = new JC.Graphics();
+    shape[3].y = -100;
+    shape[3].c = new Cricle('#eca378');
+    shape[3].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[3].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'elasticOut',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[3]);
+
+
+    shape[4] = new JC.Graphics();
+    shape[4].c = new Cricle('#e46d69');
+    shape[4].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[4].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'backIn',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[4]);
+
+
+    shape[5] = new JC.Graphics();
+    shape[5].y = 100;
+    shape[5].c = new Cricle('#618d8a');
+    shape[5].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[5].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'backOut',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[5]);
+
+
+
+
+    shape[6] = new JC.Graphics();
+    shape[6].y = 200;
+    shape[6].c = new Cricle('#618d8a');
+    shape[6].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[6].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'bounceIn',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[6]);
+
+
+
+    shape[7] = new JC.Graphics();
+    shape[7].y = 300;
+    shape[7].c = new Cricle('#618d8a');
+    shape[7].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[7].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'bounceOut',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[7]);
+
+
+
+
+    shape[8] = new JC.Graphics();
+    shape[8].y = 400;
+    shape[8].c = new Cricle('#618d8a');
+    shape[8].drawCall(function(ctx){
+        this.c.render(ctx);
+    });
+    shape[8].fromTo({
+        from: {x: -200},
+        to: {x: 200},
+        ease: 'bounceBoth',
+        duration: 7000,
+        infinity: true,
+        alternate: true
+    });
+    DOC.addChilds(shape[8]);
+
+    stage.addChilds(DOC);
+
+
+function render(){
+    RAF(render);
+
+    stage.render();
+
+    stats.update();
+}
+render();
+
+function resize(){
+    w = window.innerWidth;
+    h = window.innerHeight;
+    stage.resize(w,h);
+}
+
+</script>
+</body>
+</html>
