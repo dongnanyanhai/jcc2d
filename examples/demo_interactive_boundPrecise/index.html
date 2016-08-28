@@ -44,11 +44,15 @@ var w = window.innerWidth,
     DOC.name = 'doc';
     DOC.on('touchstart',function(ev){
         // ev.cancleBubble = true;
-        console.log('touchstart at my chest '+DOC.name+'!!!!!');
+        console.log('touchstart at my doc by Bubble !!!!!');
     });
     DOC.on('touchmove',function(ev){
         // ev.cancleBubble = true;
-        console.log('touchmove at my chest '+DOC.name+'!!!!!');
+        console.log('touchmove at my doc by Bubble !!!!!');
+    });
+    DOC.on('touchend',function(ev){
+        // ev.cancleBubble = true;
+        console.log('touchend at my doc by Bubble !!!!!');
     });
 
 
@@ -105,6 +109,7 @@ loadBox.on('compelete',function(){
     pic.on('touchstart',function(ev){
         pic.sp.x = ev.global.x;
         pic.sp.y = ev.global.y;
+        console.log('touchstart at my pic as target !!!!!');
     });
     pic.on('touchmove',function(ev){
         var np = {};
@@ -113,10 +118,12 @@ loadBox.on('compelete',function(){
 
         pic.x = pic.pp.x+np.x;
         pic.y = pic.pp.y+np.y;
+        console.log('touchmove at my pic as target !!!!!');
     });
     pic.on('touchend',function(ev){
         pic.pp.x = pic.x;
         pic.pp.y = pic.y;
+        console.log('touchend at my pic as target !!!!!');
     });
     var bounds = [
             0,-30,
