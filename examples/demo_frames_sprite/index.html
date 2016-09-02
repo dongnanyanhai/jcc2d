@@ -11,6 +11,10 @@
     </style>
 </head>
 <body>
+<div style="float: right;text-align: right;">
+    <p>点击屏幕随机播放动画</p>
+    <p id="movie">stand</p>
+</div>
 <canvas id="demo_canvas" width="320" height="410"></canvas>
 
 <script type="text/javascript" src="../libs/jcc2d.js"></script>
@@ -42,44 +46,42 @@ var stats = new Stats();
 
 
 var loadBox = JC.loaderUtil({
-    frames: './images/frames.png'
+    dragon: './images/dragon.png'
 });
 
 loadBox.on('compelete',function(){
     resize();
     runMan = new JC.Sprite({
-        texture: loadBox.getById('frames'),
-        width: 165,
-        height: 292,
-        count: 26
-    });
-    runMan.goFrames({ // you can config repeats (repeat some times) or loop (play infinite times)
-        // repeats: 1,
-        fps: 30,
-        loop: true
-    });
-    runMan.x = -165 >> 1;
-
-
-    jumpMan = new JC.Sprite({
-        texture: loadBox.getById('frames'),
-        width: 165,
-        height: 292,
-        count: 38,
-        sH: 292*2,
-        sW: 165*2
-    });
-    jumpMan.goFrames({
-        // loop: true
-        fps: 30,
-        repeats: 5,
-        fillMode: 'backwards',
-        onCompelete: function(){
-            console.log('frames animation was compelete');
+        texture: loadBox.getById('dragon'),
+        width: 210,
+        height: 231,
+        animations: {
+            fall: {start: 0,end: 4,next: 'stand'},
+            fly: {start: 5,end: 9,next: 'stand'},
+            stand: {start: 10,end: 39},
+            walk: {start: 40,end: 59,next: 'stand'}
         }
     });
-    jumpMan.x = 165 >> 1;
-    DOC.addChilds(runMan,jumpMan);
+    runMan.playMovie({ // you can config repeats (repeat some times) or infinity (play infinite times)
+        movie: 'stand',
+        fps: 30,
+        // repeats: 1,
+        infinity: true
+    });
+    runMan.on('click',function(){
+        var movie = JC.random(['walk','fly','fall']);
+        document.querySelector('#movie').innerHTML = movie;
+        runMan.playMovie({
+            movie: movie,
+            repeats: 6,
+            onCompelete: function(){
+                document.querySelector('#movie').innerHTML = 'stand';
+            }
+        });
+    });
+    runMan.x = 20;
+
+    DOC.addChilds(runMan);
     stage.addChilds(DOC);
 
 

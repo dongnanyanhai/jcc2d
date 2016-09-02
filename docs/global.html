@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Documentation Class: Texture</title>
+	<title>Documentation Global</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -70,13 +70,13 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: Texture</h1>
+	<h1 class="page-title">Global</h1>
 <section>
 
 <header>
     
         <h2>
-        Texture
+        
         </h2>
         
     
@@ -87,9 +87,71 @@
     <div class="container-overview">
     
         
+
+        
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+        
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+        <h3 class="subsection-title">Methods</h3>
+
+        <dl>
+            
 <hr>
 <dt>
-    <h4 class="name" id="Texture"><span class="type-signature"></span>new Texture()</h4>
+    <h4 class="name" id="MovieClip"><span class="type-signature"></span>MovieClip()</h4>
     
     
 </dt>
@@ -97,7 +159,11 @@
 
     
     <div class="description">
-        <p>图片纹理类</p>
+        <p>{
+  run: [0,1,2,3],
+  stand: {start: 4,end: 7,next: 'run'},
+  jump: [8,10,2]
+}</p>
     </div>
     
 
@@ -163,18 +229,125 @@
     
 </dd>
 
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="Strip"><span class="type-signature"></span>Strip(opts)</h4>
     
-    </div>
+    
+</dt>
+<dd>
 
     
-        <h3 class="subsection-title">Extends</h3>
+    <div class="description">
+        <p>播放逐祯动画</p>
+<pre class="prettyprint source lang-js"><code>sprite.goFrames({
+     fps: 60, // 逐帧帧率 默认20
+     repeats: 1,
+     infinity: true,
+     alternate: true,
+     fillMode: 2,  // 逐帧结束后元素停留在哪一帧，帧序号为从0开始的索引
+     onCompelete: function(){console.log('over');}
+});</code></pre>
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
 
         
 
+        
 
-    <ul>
-        <li><a href="JC.Eventer.html">JC.Eventer</a></li>
-    </ul>
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>opts</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
 
 
     
@@ -189,6 +362,10 @@
 
     
 
+    
+</dd>
+
+        </dl>
     
 
     
