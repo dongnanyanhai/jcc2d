@@ -43,8 +43,8 @@ var DOC = new yellowjs.Container();
                 width: 220,
                 height: 220
             });
-        el.x = (Math.random()-0.5)*w;
-        el.y = (Math.random()-0.5)*h;
+        el.x = (Math.random()-0.5)*2*w;
+        el.y = (Math.random()-0.5)*2*h;
         loopRotation(el);
         DOC.addChild(el);
     }
