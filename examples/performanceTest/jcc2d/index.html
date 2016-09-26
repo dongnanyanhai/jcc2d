@@ -25,9 +25,6 @@ window.onresize = function(){
 
 var w = window.innerWidth,
     h = window.innerHeight,
-    pic,
-    pic2,
-    pic3,
     stage = new JC.Stage('demo_canvas'),
     DOC = new JC.Container();
     DOC.x = w/2;
@@ -40,8 +37,8 @@ var stats = new Stats();
     document.body.appendChild(stats.domElement);
 
 var loadBox = JC.loaderUtil({
-    pic: './images/card02.png'
-});
+        pic: './images/card02.png'
+    });
 
 resize();
 
