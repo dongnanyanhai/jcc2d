@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <link rel="stylesheet" type="text/css" href="./css/main.css">
 </head>
 
@@ -77,48 +77,48 @@
         }
     };
 
-    var circle = new CircleGloup({
+    var circles = new CircleGloup({
         radius: w/6 >> 0
     });
     var circleParent = new JC.Graphics();
     circleParent.drawCall(function(ctx){
-        circle.render(ctx);
+        circles.render(ctx);
     });
-    var line1 = new JC.Graphics();
-    line1.drawCall(function(ctx){
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(255,255,255,0.9)";
-        ctx.moveTo(-60,280);
-        ctx.lineTo(266,-274);
-        ctx.lineTo(60,-274);
-        ctx.lineTo(-266,280);
-        ctx.fill();
-    });
-    line1.x = 540;
-    line1.y = -1679;
-    line1.to({
-        to: {x: -296,y: -274},
-        duration: 400
-    });
+    // var line1 = new JC.Graphics();
+    // line1.drawCall(function(ctx){
+    //     ctx.beginPath();
+    //     ctx.fillStyle = "rgba(255,255,255,0.9)";
+    //     ctx.moveTo(-60,280);
+    //     ctx.lineTo(266,-274);
+    //     ctx.lineTo(60,-274);
+    //     ctx.lineTo(-266,280);
+    //     ctx.fill();
+    // });
+    // line1.x = 540;
+    // line1.y = -1679;
+    // line1.to({
+    //     to: {x: -296,y: -274},
+    //     duration: 400
+    // });
 
-    var line2 = new JC.Graphics();
-    line2.drawCall(function(ctx){
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(255,255,255,0.9)";
-        ctx.moveTo(-60,280);
-        ctx.lineTo(266,-274);
-        ctx.lineTo(60,-274);
-        ctx.lineTo(-266,280);
-        ctx.fill();
-    });
-    line2.x = -540;
-    line2.y = 1679;
-    line2.to({
-        to: {x: 296,y: 274},
-        duration: 400
-    });
+    // var line2 = new JC.Graphics();
+    // line2.drawCall(function(ctx){
+    //     ctx.beginPath();
+    //     ctx.fillStyle = "rgba(255,255,255,0.9)";
+    //     ctx.moveTo(-60,280);
+    //     ctx.lineTo(266,-274);
+    //     ctx.lineTo(60,-274);
+    //     ctx.lineTo(-266,280);
+    //     ctx.fill();
+    // });
+    // line2.x = -540;
+    // line2.y = 1679;
+    // line2.to({
+    //     to: {x: 296,y: 274},
+    //     duration: 400
+    // });
 
-    DOC.addChilds(circleParent,line1,line2);
+    DOC.addChilds(circleParent);//,line1,line2
     stage.addChilds(DOC);
 
     function render() {
