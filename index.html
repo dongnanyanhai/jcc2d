@@ -2,139 +2,109 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+    <title>jcc2d.js</title>
+    <script type="text/javascript">
+    (function() {
+        'use strict';
+        var UI = {
+            VOH: 'width',
+            DsgSize: 640,
+            root: document.documentElement,
+            needPut: false,
+            ucHole: 1,
+            resolution: Math.min(2, window.devicePixelRatio),
+            rem: 100,
+            monitoring: false,
+            isUC: /uc/i.test(window.navigator.userAgent)
+        };
+
+        UI.init = function(opts) {
+            opts = opts || {};
+            this.VOH = opts.VOH || 'width';
+            this.DsgSize = opts.DsgSize || 640;
+            this.rem = opts.rem || 100;
+            this.resolution = opts.resolution || this.resolution;
+            this.meta = this.meta || document.querySelector('meta[name="viewport"]');
+            this._putMeta();
+        };
+        UI._putMeta = function() {
+            if (!this.meta) {
+                this.meta = document.createElement('meta');
+                this.meta.setAttribute('name', 'viewport');
+                this.needPut = true;
+            }
+            var ratio = 1 / this.resolution;
+            this.meta.setAttribute('content', 'width=device-width,initial-scale=' + ratio + ', maximum-scale=' + ratio + ', minimum-scale=' + ratio + ', user-scalable=no');
+            if (this.needPut) {
+                document.head.appendChild(this.meta);
+                this.needPut = false;
+            }
+            this.suit();
+            this._ears();
+        };
+        UI._ears = function() {
+            if (this.monitoring) return;
+            var This = this;
+            window.addEventListener('resize', function() {
+                This.suit();
+            }, false);
+            document.addEventListener("DOMContentLoaded", function() {
+                This.isUC && This._fillHole();
+            });
+            setTimeout(function() {
+                This.suit();
+            }, 100);
+            this.monitoring = true;
+        };
+        UI._fillHole = function() {
+            var dom = document.createElement('div'),
+                sPX = 100,
+                tPX = 100;
+            dom.style.fontSize = sPX + "px";
+            document.body.appendChild(dom);
+            tPX = parseInt(window.getComputedStyle(dom, null).fontSize, 10) || tPX;
+
+            this.ucHole = sPX / tPX;
+
+            this.suit();
+
+            setTimeout(function() {
+                document.body.removeChild(dom);
+            }, 100);
+        };
+        UI.suit = function() {
+            var nowSize = this.VOH === 'width' ? document.documentElement.offsetWidth : document.documentElement.offsetHeight;
+            this.sPPR = this.rem * nowSize / this.DsgSize;
+            this.curPPR = this.ucHole * this.sPPR;
+            this.root.style.fontSize = this.curPPR + 'px';
+        };
+        UI.RTP = function(rem, bool) {
+            return (bool ? rem * this.curPPR : rem * this.sPPR) >> 0;
+        };
+        UI.PTR = function(px) {
+            return px / this.curPPR;
+        };
+
+        window.JC = window.JC || {};
+        window.JC.UI = UI;
+    })();
+    window.JC.UI.init();
+    </script>
     <link rel="stylesheet" type="text/css" href="./css/main.css">
+    </style>
 </head>
 
 <body>
-    <canvas id="canvas" width="640" height="550"></canvas>
-    <div class="navgator">
-        <div class="documention"><a href="docs">documention</a></div>
-        <div class="examples"><a href="examples">examples</a></div>
-    </div>
+    <canvas id="line-canvas"></canvas>
     <script type="text/javascript" src="./examples/libs/jcc2d.js"></script>
-    <script type="text/javascript">
-    function modulo(n, m) {
-        return ((n % m) + m) % m;
-    }
-
-    window.onresize = window.onload = function() {
-        resize();
-    };
-    var w = window.innerWidth,
-        h = window.innerHeight,
-        TWO_PI = Math.PI * 2,
-        stage = new JC.Stage('canvas'),
-        DOC = new JC.Container();
-
-    function Circle(opts) {
-        opts = opts || {};
-        this.live = opts.live || 5000;
-        this.space = opts.space || 1000;
-        this.radius = opts.radius;
-        this.color = '#db3c79';
-        this.scale = 1;
-        this.alpha = 1;
-    }
-    Circle.prototype.update = function(idx, time) {
-        this.scale = 1 + Math.pow(2 * modulo(idx * this.space + time, this.live) / this.live, 0.9);
-        this.alpha = 0.9 * (1 - Math.pow(modulo(idx * this.space + time, this.live) / this.live, 0.9));
-    };
-    Circle.prototype.render = function(ctx) {
-        ctx.save();
-        ctx.transform(this.scale, 0, 0, this.scale, 0, 0);
-        ctx.globalAlpha = this.alpha;
-        ctx.fillStyle = this.color;
-        ctx.beginPath();
-        ctx.arc(0, 0, this.radius, 0, TWO_PI);
-        ctx.closePath();
-        ctx.fill();
-        ctx.globalAlpha = 1;
-        ctx.restore();
-    };
-
-    function CircleGloup(opts) {
-        opts = opts || {};
-        this.radius = opts.radius || 100;
-        this.num = opts.num || 5;
-        this.circle = [];
-        this.spawn();
-    }
-    CircleGloup.prototype.spawn = function() {
-        for (var i = 0; i < this.num; i++) {
-            var star = new Circle({
-                radius: this.radius
-            });
-            this.circle.push(star);
-        }
-    };
-    CircleGloup.prototype.render = function(ctx) {
-        var time = Date.now();
-        for (var i = 0; i < this.num; i++) {
-            this.circle[i].update(i, time);
-            this.circle[i].render(ctx);
-        }
-    };
-
-    var circles = new CircleGloup({
-        radius: w/6 >> 0
-    });
-    var circleParent = new JC.Graphics();
-    circleParent.drawCall(function(ctx){
-        circles.render(ctx);
-    });
-    // var line1 = new JC.Graphics();
-    // line1.drawCall(function(ctx){
-    //     ctx.beginPath();
-    //     ctx.fillStyle = "rgba(255,255,255,0.9)";
-    //     ctx.moveTo(-60,280);
-    //     ctx.lineTo(266,-274);
-    //     ctx.lineTo(60,-274);
-    //     ctx.lineTo(-266,280);
-    //     ctx.fill();
-    // });
-    // line1.x = 540;
-    // line1.y = -1679;
-    // line1.to({
-    //     to: {x: -296,y: -274},
-    //     duration: 400
-    // });
-
-    // var line2 = new JC.Graphics();
-    // line2.drawCall(function(ctx){
-    //     ctx.beginPath();
-    //     ctx.fillStyle = "rgba(255,255,255,0.9)";
-    //     ctx.moveTo(-60,280);
-    //     ctx.lineTo(266,-274);
-    //     ctx.lineTo(60,-274);
-    //     ctx.lineTo(-266,280);
-    //     ctx.fill();
-    // });
-    // line2.x = -540;
-    // line2.y = 1679;
-    // line2.to({
-    //     to: {x: 296,y: 274},
-    //     duration: 400
-    // });
-
-    DOC.addChilds(circleParent);//,line1,line2
-    stage.addChilds(DOC);
-
-    function render() {
-        RAF(render);
-        stage.render();
-    }
-    render();
-
-    function resize() {
-        w = window.innerWidth;
-        h = window.innerHeight;
-        DOC.x = w / 2;
-        DOC.y = h / 2;
-        stage.resize(w, h);
-    }
-    </script>
+    <script type="text/javascript" src="./js/simplexnoise.js"></script>
+    <script type="text/javascript" src="./js/tween.js"></script>
+    <script type="text/javascript" src="./js/particleEngine.js"></script>
+    <script type="text/javascript" src="./js/main.js"></script>
 </body>
 
 </html>
+
