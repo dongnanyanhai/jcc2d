@@ -333,7 +333,7 @@ function logoIn(){
                     to: {y: 0, alpha: 1},
                     ease: 'bounceOut',
                     duration: 800,
-                    delay: i*100
+                    wait: i*100
                 })
         if(i===textDOC.length-1)animate.onCompelete = function(){
             miniText.to({
