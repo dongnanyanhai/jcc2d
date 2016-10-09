@@ -271,17 +271,18 @@ var texts = [
 for (var i = 0; i < texts.length; i++) {
     textDOC[i] = new JC.Text(texts[i].text, 'bold '+JC.UI.RTP(.7)+'px Tangerine');
     textDOC[i].x = texts[i].x;
-    textDOC[i].y = -h*2/3;
+    textDOC[i].y = -h/3;
+    textDOC[i].alpha = 0;
     LOGO.addChilds(textDOC[i]);
 }
-var miniText = new JC.Text('The canvas 2d renderer & an awesome animator', 'bold '+JC.UI.RTP(.2)+'px Tangerine');
+var miniText = new JC.Text('The canvas 2d renderer & An awesome animator', 'normal '+JC.UI.RTP(.2)+'px Tangerine');
 miniText.y = JC.UI.RTP(.7);
 miniText.alpha = 0;
 LOGO.addChilds(miniText,BTNBOX);
 var documentLink = new JC.Graphics();
 var linkFace = new LinkFace({
         text: 'Document',
-        font: 'normal '+JC.UI.RTP(.16)+'px Tangerine',
+        font: 'bold '+JC.UI.RTP(.16)+'px Tangerine',
         color: '#eca31c',
         textColor: '#000000'
     });
@@ -299,7 +300,7 @@ BTNBOX.addChilds(documentLink);
 var examplesLink = new JC.Graphics();
 var linkFace2 = new LinkFace({
         text: 'Examples',
-        font: 'normal '+JC.UI.RTP(.16)+'px Tangerine',
+        font: 'bold '+JC.UI.RTP(.16)+'px Tangerine',
         color: '#53d497',
         textColor: '#000000'
     });
@@ -329,9 +330,9 @@ function render() {
 function logoIn(){
     for (var i = 0; i < textDOC.length; i++) {
         var animate = textDOC[i].to({
-                    to: {y: 0},
+                    to: {y: 0, alpha: 1},
                     ease: 'bounceOut',
-                    duration: 1000,
+                    duration: 800,
                     delay: i*100
                 })
         if(i===textDOC.length-1)animate.onCompelete = function(){
